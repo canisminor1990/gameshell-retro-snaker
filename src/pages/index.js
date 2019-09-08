@@ -1,42 +1,42 @@
-import { Component } from "react";
-import styled, { createGlobalStyle, css } from "styled-components";
-import Snake from "../components/Snake";
-import Food from "../components/Food";
-import ScoreBoard from "../components/ScoreBoard";
-import Mask from "../components/Mask";
-import Config from "../config";
-import Sound from "react-sound";
-import { getRandomCoordinates, getSkin, getSpeed } from "../utils";
-import _ from "lodash";
+import { Component } from 'react';
+import styled, { createGlobalStyle, css } from 'styled-components';
+import Snake from '../components/Snake';
+import Food from '../components/Food';
+import ScoreBoard from '../components/ScoreBoard';
+import Mask from '../components/Mask';
+import Config from '../config';
+import Sound from 'react-sound';
+import { getRandomCoordinates, getSkin, getSpeed } from '../utils';
+import _ from 'lodash';
 
 /// /////////////////////////////////////////////
 // styled
 /// /////////////////////////////////////////////
 
 const GameshellBody = css`
-    width: 320px;
-    height: 240px;
-    min-width: 320px;
-    min-height: 240px;
-    max-width: 320px;
-    max-height: 240px;
-    overflow: hidden;
-    border-radius: 8px;
-    background: #fff;
-    font-family: "pixel";
-    line-height: 1;
-    font-size: 8px;
-    color: #154d6c;
+  width: 320px;
+  height: 240px;
+  min-width: 320px;
+  min-height: 240px;
+  max-width: 320px;
+  max-height: 240px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fff;
+  font-family: 'pixel';
+  line-height: 1;
+  font-size: 8px;
+  color: #154d6c;
 `;
 
 const webviewBody = css`
-    width: 100vw;
-    height: 1000vh;
-    font-family: "pixel";
-    line-height: 1;
-    font-size: 8px;
-    color: #154d6c;
-    background:#9cc4d1;
+  width: 100vw;
+  height: 1000vh;
+  font-family: 'pixel';
+  line-height: 1;
+  font-size: 8px;
+  color: #154d6c;
+  background: #9cc4d1;
 `;
 
 const GlobalStyle = createGlobalStyle`
@@ -49,12 +49,12 @@ const GlobalStyle = createGlobalStyle`
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background: ${({ gameshell }) => gameshell ? "#000" : "#9cc4d1"};
+    background: ${({ gameshell }) => (gameshell ? '#000' : '#9cc4d1')};
   }
 
   
   body {
-    ${({ gameshell }) => gameshell ? GameshellBody : webviewBody}
+    ${({ gameshell }) => (gameshell ? GameshellBody : webviewBody)}
   }
 `;
 
@@ -64,32 +64,35 @@ const View = styled.div`
   height: 240px;
   background: #9cc4d1;
   position: relative;
-  ${({ gameshell }) => gameshell ? null : css`
-    left: calc(50vw - 160px);
-    top: calc(50vh - 240px);
-    &:before {
-      display: block;
-      position: absolute;
-      content:"MADE BY CANIS MINOR :P";
-      width: 100%;
-      text-align: center;
-      left:0;
-      bottom: -180px;
-      font-size: 12px;
-    }
-    &:after {
-      display: block;
-      position: absolute;
-      content:"";
-      background: url("./img/gameshell.png") no-repeat;
-      background-size: 100%;
-      width: 720px;
-      height: 580px;
-      top:-174px;
-      left: -200px;
-      z-index: 999;
-    }
-`}
+  ${({ gameshell }) =>
+    gameshell
+      ? null
+      : css`
+          left: calc(50vw - 160px);
+          top: calc(50vh - 240px);
+          &:before {
+            display: block;
+            position: absolute;
+            content: 'MADE BY CANIS MINOR :P';
+            width: 100%;
+            text-align: center;
+            left: 0;
+            bottom: -180px;
+            font-size: 12px;
+          }
+          &:after {
+            display: block;
+            position: absolute;
+            content: '';
+            background: url('./img/gameshell.png') no-repeat;
+            background-size: 100%;
+            width: 720px;
+            height: 580px;
+            top: -174px;
+            left: -200px;
+            z-index: 999;
+          }
+        `}
 `;
 
 const Backgorund = styled.div`
@@ -115,24 +118,24 @@ const SnakeArea = styled.div`
 /// /////////////////////////////////////////////
 
 const initialState = () => ({
-  gameover     : false,
-  gameshell    : window.innerWidth < 744,
-  soundEat     : Sound.status.STOPPED,
+  gameover: false,
+  gameshell: window.innerWidth < 744,
+  soundEat: Sound.status.STOPPED,
   soundGameOver: Sound.status.STOPPED,
-  food         : getRandomCoordinates(),
-  speed        : 1,
-  direction    : "RIGHT",
-  addScore     : 0,
-  score        : 0,
-  skins        : [getSkin(), getSkin()],
-  snakeDots    : [[0, 0], [1, 0]]
+  food: getRandomCoordinates(),
+  speed: 1,
+  direction: 'RIGHT',
+  addScore: 0,
+  score: 0,
+  skins: [getSkin(), getSkin()],
+  snakeDots: [[0, 0], [1, 0]],
 });
 
 class App extends Component {
   state = initialState();
 
   componentDidMount() {
-    window.clock       = setInterval(this.moveSnake, getSpeed(this.state.speed));
+    window.clock = setInterval(this.moveSnake, getSpeed(this.state.speed));
     document.onkeydown = this.onKeyDown;
   }
 
@@ -147,21 +150,21 @@ class App extends Component {
   }
 
   onKeyDown = e => {
-    e                   = e || window.event;
+    e = e || window.event;
     const { direction } = this.state;
     switch (e.keyCode) {
       case Config.key.up:
-        if (direction !== "DOWN") this.setState({ direction: "UP" });
+        if (direction !== 'DOWN') this.setState({ direction: 'UP' });
         break;
       case Config.key.down:
-        if (direction !== "UP") this.setState({ direction: "DOWN" });
+        if (direction !== 'UP') this.setState({ direction: 'DOWN' });
 
         break;
       case Config.key.left:
-        if (direction !== "RIGHT") this.setState({ direction: "LEFT" });
+        if (direction !== 'RIGHT') this.setState({ direction: 'LEFT' });
         break;
       case Config.key.right:
-        if (direction !== "LEFT") this.setState({ direction: "RIGHT" });
+        if (direction !== 'LEFT') this.setState({ direction: 'RIGHT' });
         break;
       case Config.key.start:
         if (this.state.gameover) {
@@ -180,16 +183,16 @@ class App extends Component {
     let head = dots[dots.length - 1];
 
     switch (this.state.direction) {
-      case "RIGHT":
+      case 'RIGHT':
         head = [head[0] + 1, head[1]];
         break;
-      case "LEFT":
+      case 'LEFT':
         head = [head[0] - 1, head[1]];
         break;
-      case "DOWN":
+      case 'DOWN':
         head = [head[0], head[1] + 1];
         break;
-      case "UP":
+      case 'UP':
         head = [head[0], head[1] - 1];
         break;
     }
@@ -207,7 +210,7 @@ class App extends Component {
 
   checkIfCollapsed = () => {
     let snake = [...this.state.snakeDots];
-    let head  = snake[snake.length - 1];
+    let head = snake[snake.length - 1];
     snake.pop();
     snake.forEach(dot => {
       if (head[0] === dot[0] && head[1] === dot[1]) {
@@ -218,16 +221,16 @@ class App extends Component {
 
   checkIfEat = () => {
     let { food, skins, score, snakeDots, speed } = this.state;
-    let head                                     = snakeDots[snakeDots.length - 1];
+    let head = snakeDots[snakeDots.length - 1];
     if (head[0] === food[0] && head[1] === food[1]) {
       skins.push(getSkin());
       score = score + snakeDots.length * speed;
       this.setState({
-                      food    : this.getNewFood(),
-                      skins,
-                      score,
-                      soundEat: Sound.status.PLAYING
-                    });
+        food: this.getNewFood(),
+        skins,
+        score,
+        soundEat: Sound.status.PLAYING,
+      });
       this.enlargeSnake();
       this.increaseSpeed();
     }
@@ -244,8 +247,8 @@ class App extends Component {
     let newSnake = [...this.state.snakeDots];
     newSnake.unshift([]);
     this.setState({
-                    snakeDots: newSnake
-                  });
+      snakeDots: newSnake,
+    });
   };
 
   increaseSpeed = () => {
@@ -272,14 +275,14 @@ class App extends Component {
   render() {
     return (
       <>
-        <GlobalStyle gameshell={this.state.gameshell}/>
+        <GlobalStyle gameshell={this.state.gameshell} />
         <View gameshell={this.state.gameshell}>
           <Backgorund>
-            <ScoreBoard score={this.state.score} gameover={this.state.gameover}/>
-            <Mask gameover={this.state.gameover}/>
+            <ScoreBoard score={this.state.score} gameover={this.state.gameover} />
+            <Mask gameover={this.state.gameover} />
             <SnakeArea>
-              <Snake skins={this.state.skins} snakeDots={this.state.snakeDots}/>
-              <Food key={this.state.score} dot={this.state.food}/>
+              <Snake skins={this.state.skins} snakeDots={this.state.snakeDots} />
+              <Food key={this.state.score} dot={this.state.food} />
             </SnakeArea>
           </Backgorund>
           <Sound
@@ -296,7 +299,7 @@ class App extends Component {
               this.setState({ soundGameOver: Sound.status.STOPPED });
             }}
           />
-          <Sound url="./sound/bgm.mp3" playStatus={Sound.status.PLAYING} volume={50} loop/>
+          <Sound url="./sound/bgm.mp3" playStatus={Sound.status.PLAYING} volume={50} loop />
         </View>
       </>
     );
